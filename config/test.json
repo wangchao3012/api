@@ -1,5 +1,5 @@
 {
-    "port": 3000,
+    "port": 3001,
     "app": {
         "defaultToken": "E07657CD6002B363",
         "defaultPwdSalt": "E07657CD6002B363"
@@ -8,12 +8,11 @@
         "account": {
             "dbname": "xz_test_account",
             "user": "root",
-            "password": "1qaz@WSX",
+            "password": "123456",
             "options": {
                 "host": "127.0.0.1",
-                // "host": "10.25.24.72",
                 "port": 3306,
-                "dialect": "mysql",
+                "dialect": "mariadb",
                 "pool": {
                     "max": 5,
                     "min": 1
@@ -25,17 +24,18 @@
                     // "allowNull":false
                     // "defaultValue":""
                 }
+                // ,
+                // "quoteIdentifiers": true
             }
         },
         "log": {
             "dbname": "xz_test_log",
             "user": "root",
-            "password": "1qaz@WSX",
+            "password": "123456",
             "options": {
-                "host": "192.168.16.129",
-                // "host": "10.25.24.72",
+                "host": "127.0.0.1",
                 "port": 3306,
-                "dialect": "mysql",
+                "dialect": "mariadb",
                 "pool": {
                     "max": 5,
                     "min": 1

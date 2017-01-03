@@ -8,6 +8,7 @@ var user = {
         });
     },
     reg: async function (d) {
+        
         // await User.create({})
     }
 }
