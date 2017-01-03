@@ -1,0 +1,64 @@
+{
+    "port": 3000,
+    "app": {
+        "defaultToken": "E07657CD6002B363",
+        "defaultPwdSalt": "E07657CD6002B363"
+    },
+    "mysql": {
+        "account": {
+            "dbname": "xz_test_account",
+            "user": "root",
+            "password": "1qaz@WSX",
+            "options": {
+                "host": "127.0.0.1",
+                // "host": "10.25.24.72",
+                "port": 3306,
+                "dialect": "mysql",
+                "pool": {
+                    "max": 5,
+                    "min": 1
+                },
+                "define": {
+                    "freezeTableName": true, //模型名是否和数据库名称相同
+                    "paranoid": true, //是否标记删除
+                    "timestamps": true //是否标记删除 
+                    // "allowNull":false
+                    // "defaultValue":""
+                }
+            }
+        },
+        "log": {
+            "dbname": "xz_test_log",
+            "user": "root",
+            "password": "1qaz@WSX",
+            "options": {
+                "host": "192.168.16.129",
+                // "host": "10.25.24.72",
+                "port": 3306,
+                "dialect": "mysql",
+                "pool": {
+                    "max": 5,
+                    "min": 1
+                },
+                "define": {
+                    "freezeTableName": true, //模型名是否和数据库名称相同
+                    "paranoid": true, //是否标记删除
+                    "timestamps": true //是否标记删除 
+                    // "allowNull":false
+                    // "defaultValue":""
+                }
+            }
+        }
+    },
+    "ssdb": {
+        "host": "127.0.0.1",
+        "port": 8888,
+        "auth": "undefined", // ssdb server auth password
+        //authCallback: function (err, data) { if (err) throw err; },  // callback function on auth
+        "size": 1, // connection pool size
+        "timeout": 0,
+        "promisify": true, // make api methods promisify.
+        "thunkify": false // make api methods thunkify.
+        // policy: Pool.policies.round_robin,
+    }
+}
