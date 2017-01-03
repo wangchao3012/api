@@ -1,0 +1,38 @@
+{
+  "name": "project",
+  "version": "0.0.1",
+  "description": "项目",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wangchao3012/project.git"
+  },
+  "keywords": [
+    "koa",
+    "mysql"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wangchao3012/project/issues"
+  },
+  "homepage": "https://github.com/wangchao3012/project#readme",
+  "dependencies": {
+    "config": "^1.24.0",
+    "koa": "^2.0.0",
+    "koa-bodyparser": "^2.3.0",
+    "koa-convert": "^1.2.0",
+    "koa-cors": "0.0.16",
+    "koa-router": "^7.1.0",
+    "md5": "^2.2.1",
+    "mysql2": "^1.1.2",
+    "request": "^2.79.0",
+    "request-promise": "^4.1.1",
+    "sequelize": "^3.28.0",
+    "ssdb": "^0.3.8",
+    "uuid": "^3.0.1"
+  }
+}
