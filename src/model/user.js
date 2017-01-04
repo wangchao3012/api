@@ -30,7 +30,7 @@ module.exports = function (sequelize, DataTypes) {
             defaultValue: ''
         },
         roleNames: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(1000),
             defaultValue: ''
         },
         salt: {
@@ -40,6 +40,10 @@ module.exports = function (sequelize, DataTypes) {
         password: {
             type: DataTypes.STRING,
             defaultValue: ''
+        },
+        passwordErrorNum: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0
         },
         email: {
             type: DataTypes.STRING,

@@ -25,7 +25,7 @@ app.use(async (ctx, next) => {
         // require('./service/' + arr[0] + '/' + arr[1]);
         var cla = require('./service/' + arr[0] + '/' + arr[1]);
         try {
-            sr.d = await cla[arr[2]](cr.d);
+            sr.d = await cla[arr[2]](cr.d, cr);
             next();
             // sr.d = await new cla()[arr[2]](cr.d);
         } catch (err) {

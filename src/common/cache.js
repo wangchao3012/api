@@ -4,7 +4,13 @@ const pool = ssdb.createPool(config.ssdb);
 
 var cache = {
     key: {
+        token: 'token',
         error: 'error',
+        taskReal: 'taskReal',//实时任务
+        taskFast: 'taskFast',//快速任务
+    },
+    keys: function (...x) {
+        return x.reduce((m, n) => m + '_' + n);
     },
     set: async function (key, val) {
 
@@ -15,7 +21,8 @@ var cache = {
         console.log(b);  // 1 'val' 
         return b;
 
-    }, get: async function () {
+    },
+    get: async function () {
 
         var conn = pool.acquire();
         // var a = yield conn.set('key', 'val222');
@@ -42,6 +49,7 @@ var cache = {
         return await conn.qpop(k);
     },
 }
+
 module.exports = cache;
 
 

@@ -40,14 +40,14 @@ tool.prototype = {
         }
         return this;
     },
-    isTrue: function (msg) {
-        if (!this.obj) {
+    isTrue: function (flag, msg) {
+        if (!flag) {
             throw msg;
         }
         return this;
     },
-    isFalse: function (msg) {
-        if (this.obj) {
+    isFalse: function (flag,msg) {
+        if (flag) {
             throw msg;
         }
         return this;
