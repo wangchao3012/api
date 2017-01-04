@@ -25,7 +25,7 @@ app.use(async (ctx, next) => {
         // require('./service/' + arr[0] + '/' + arr[1]);
         var cla = require('./service/' + arr[0] + '/' + arr[1]);
         try {
-            sr.d = await cla[arr[2]](cr.d, cr);
+            sr.d = await cla[arr[2]](JSON.parse(cr.d), cr);
             next();
             // sr.d = await new cla()[arr[2]](cr.d);
         } catch (err) {
@@ -61,12 +61,12 @@ var sr = {
     d: null
 };
 const defaultToken = config.app.defaultToken;
-const noCheckToken = ['user.login', 'user.register'];
+const noCheckToken = ['account.user.login', 'user.register'];
 
 
 var checkAuth = async function (cr) {
 
-    if (cr.test || (noCheckToken.indexOf != -1 && tool.checkSign(cr, defaultToken))) {
+    if (cr.test || (noCheckToken.indexOf(cr.m) != -1 && tool.checkSign(cr, defaultToken))) {
         return { sc: statusCode.成功 };
     }
     else {

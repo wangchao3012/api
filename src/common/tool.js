@@ -17,9 +17,14 @@ tool.signJoin = function (obj, token) {
     //     return a.toLowerCase() > b.toLowerCase() ? 1 : -1
     // }); 
 };
-tool.checkSign = function (obj, token) {
+tool.sign = function (obj, token) {
 
-    return obj.sign == md5(this.signJoin(obj, token))
+    obj.si = md5(tool.signJoin(obj, token));
+    return obj;
+}
+tool.checkSign = function (obj, token) {
+    console.log('si:::', md5(this.signJoin(obj, token)));
+    return obj.si == md5(this.signJoin(obj, token));
 }
 tool.createPassword = function (pwd, salt) {
     return md5(config.app.defaultPwdSalt + pwd + salt);
@@ -46,7 +51,7 @@ tool.prototype = {
         }
         return this;
     },
-    isFalse: function (flag,msg) {
+    isFalse: function (flag, msg) {
         if (flag) {
             throw msg;
         }

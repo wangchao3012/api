@@ -9,7 +9,7 @@ let sequelize = new Sequelize(config.mysql.account.dbname, config.mysql.account.
 let User = sequelize.import('../model/user');
 let Role = sequelize.import('../model/role');
 let Menu = sequelize.import('../model/menu');
-let ThreeUser = sequelize.import('../model/threeUser'); 
+let ThreeUser = sequelize.import('../model/threeUser');
 
 User.hasMany(ThreeUser, { foreignKey: 'userId', targetKey: 'id', as: 'ThreeUser' });
 
@@ -24,8 +24,11 @@ Menu.belongsToMany(Role, { 'through': RoleInMenu, foreignKey: 'menuId', targetKe
 let MessageTemp = sequelize.import('../model/messageTemp');
 
 
-sequelize.sync({ force: false }).then(res => {
+sequelize.sync({ force: true }).then(res => {
     console.info("%s   数据库同步成功", config.mysql.account.dbname);
+    // 添加基础数据
+
+    let rs = Role.bulkCreate([{ name: '系统管理员', code: 'sysAdmin', sort: 1 }, { name: '管理员', code: 'admin', sort: 2 }, { name: '普通用户', code: 'user', sort: 3 }])
 
     // sequelize.transaction(t => {
     //     return User.create({ name: '系统管理员1' }, { transaction: t }).then(u => {
@@ -48,9 +51,6 @@ sequelize.sync({ force: false }).then(res => {
     // });
 
 
-    // 添加基础数据
-
-    // let rs = Role.bulkCreate([{ name: '系统管理员', code: 'sysAdmin', sort: 1 }, { name: '管理员', code: 'admin', sort: 2 }, { name: '普通用户', code: 'user', sort: 3 }])
     // console.info('rs:', rs);
     // var dm = sequelize.transaction(t => {
     // return User.create({ name: 'name1' }, { transaction: t }).then(u => {

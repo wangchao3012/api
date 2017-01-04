@@ -45,6 +45,27 @@
                 "NODE_ENV": "test"
             }
         }
+        ,
+        {
+            "type": "node",
+            "runtimeArgs": [
+                "--harmony-async-await"
+            ],
+            "args": [
+                "--harmony-async-await"
+            ],
+            "request": "launch",
+            "name": "account.test",
+            "program": "${workspaceRoot}/test/account.test.js",
+            "cwd": "${workspaceRoot}",
+            "skipFiles": [
+                "node_modules/**/*.js"
+            ],
+            // "envFile": "${workspaceRoot}/.env"
+            "env": {
+                "NODE_ENV": "test"
+            }
+        }
         // ,
         // {
         //     "type": "node",
