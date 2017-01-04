@@ -21,7 +21,6 @@ var userService = {
                 let verCode = await Cache.hget(cr.oid, Cache.keys(Cache.key.token, cr.sn));
                 Tool.isTrue(d.verCode == verCode, '验证码不正确');
                 await User.findOne({ mobile: d.mobile }).then(dmu => {
-                    Tool(dmu).notNull('用户名或密码错误').isTrue(Tool.createPassword(d.password, dmu.salt) == dmu.password, '用户名或密码错误');
                     user = dmu;
                 })
                 break;
