@@ -60,8 +60,12 @@ var sr = {
     s: '',//返回状态信息
     d: null
 };
+process.env.NODE_ENV = 'prod';
+console.log('env::', process.env.NODE_ENV);
 const defaultToken = config.app.defaultToken;
 const noCheckToken = ['account.user.login', 'user.register'];
+
+
 
 
 var checkAuth = async function (cr) {

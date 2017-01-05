@@ -72,7 +72,7 @@ var userService = {
 let getUserInfo = async function (user, cr) {
     let token = uuid();
     await Cache.hset(user.openId, Cache.keys(Cache.key.token, cr.sn), token);
-    let token1 = await Cache.hget(cr.oid, Cache.keys(Cache.key.token, cr.sn));
+    // let token1 = await Cache.hget(cr.oid, Cache.keys(Cache.key.token, cr.sn));
     return {
         userName: user.userName,
         openId: user.openId,
