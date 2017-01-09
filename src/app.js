@@ -100,5 +100,5 @@ module.exports = app;
 // const dbLog = require('./service/dbLog');
 // new dbLog().sync();
 
-const dbAccount = require('./service/dbAccount');
-const dbLog = require('./service/dbLog')
+// const dbAccount = require('./service/dbAccount');
+// const dbLog = require('./service/dbLog')
