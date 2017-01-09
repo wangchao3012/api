@@ -1,5 +1,5 @@
 {
-    "port": 3001,
+    "port": 3000,
     "app": {
         "defaultToken": "E07657CD6002B363",
         "defaultPwdSalt": "E07657CD6002B363"
@@ -10,7 +10,7 @@
             "user": "root",
             "password": "123456",
             "options": {
-                "host": "127.0.0.1",
+                "host": "10.25.24.72",
                 "port": 3306,
                 "dialect": "mariadb",
                 "pool": {
@@ -33,7 +33,7 @@
             "user": "root",
             "password": "123456",
             "options": {
-                "host": "127.0.0.1",
+                "host": "10.25.24.72",
                 "port": 3306,
                 "dialect": "mariadb",
                 "pool": {
@@ -51,7 +51,7 @@
         }
     },
     "ssdb": {
-        "host": "127.0.0.1",
+        "host": "10.25.24.72",
         "port": 8888,
         "auth": "undefined", // ssdb server auth password
         //authCallback: function (err, data) { if (err) throw err; },  // callback function on auth
