@@ -9,11 +9,11 @@ module.exports = function (sequelize, DataTypes) {
             defaultValue: ''
         },
         cr: {
-            type: DataTypes.STRING,
+            type: DataTypes.TEXT,
             defaultValue: ''
         },
-        rs: {
-            type: DataTypes.STRING,
+        sr: {
+            type: DataTypes.TEXT,
             defaultValue: ''
         },
         useTime: {

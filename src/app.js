@@ -13,11 +13,10 @@ const bodyparser = require('koa-bodyparser')();
 app.use(convert(bodyparser));
 
 const tool = require('./common/tool');
-
-
+const task = require('./common/task');
 // let service = require('./service/index');
 app.use(async (ctx, next) => {
-
+    let ctime = new Date();
     let cr = ctx.request.body;
     var sr = await checkAuth(cr);
     if (sr.sc == statusCode.成功) {
@@ -26,16 +25,17 @@ app.use(async (ctx, next) => {
         var cla = require('./service/' + arr[0] + '/' + arr[1]);
         try {
             sr.d = await cla[arr[2]](JSON.parse(cr.d), cr);
-            next();
+            // next();
             // sr.d = await new cla()[arr[2]](cr.d);
         } catch (err) {
             console.log('err::', err)
             if (err.stack) {
                 sr.msg = '服务器异常，请稍后重试';
                 sr.sc = statusCode.系统错误;
-                cache.qpush(cache.key.error, {
+                task.setTaskFast(task.DataType.x错误日志, {
                     method: cr.m,
                     cr: JSON.stringify(cr),
+                    sr: JSON.stringify(sr),
                     message: err.message,
                     stack: err.stack
                 });
@@ -45,9 +45,16 @@ app.use(async (ctx, next) => {
             }
         }
     }
-
+    task.setTaskFast(task.DataType.xAPI日志, {
+        IP: ctx.ip,
+        method: cr.m,
+        cr: JSON.stringify(cr),
+        sr: JSON.stringify(sr),
+        useTime: new Date() - ctime,
+        statusCode: sr.sc,
+        sn: cr.sn,
+    });
     ctx.body = sr;
-
 });
 var statusCode = {
     成功: 0,
@@ -100,5 +107,5 @@ module.exports = app;
 // const dbLog = require('./service/dbLog');
 // new dbLog().sync();
 
-// const dbAccount = require('./service/dbAccount');
-// const dbLog = require('./service/dbLog')
+const dbAccount = require('./service/dbAccount');
+const dbLog = require('./service/dbLog')

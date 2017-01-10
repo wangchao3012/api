@@ -6,11 +6,11 @@ module.exports = function (sequelize, DataTypes) {
         cr: {
             type: DataTypes.STRING
         },
-        rs: {
+        sr: {
             type: DataTypes.STRING
         },
         message: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING(1000)
         },
         stack: {
             type: DataTypes.TEXT

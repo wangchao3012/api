@@ -38,6 +38,7 @@
     "should": "^11.1.2",
     "ssdb": "^0.3.8",
     "supertest": "^2.0.1",
+    "thread-sleep": "^2.0.0",
     "uuid": "^3.0.1"
   }
 }

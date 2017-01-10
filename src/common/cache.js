@@ -7,7 +7,7 @@ var cache = {
         token: 'token',
         error: 'error',
         taskReal: 'taskReal',//实时任务
-        taskFast: 'taskFast',//快速任务
+        taskFast: 'taskFast',//慢速任务
     },
     keys: function (...x) {
         return x.reduce((m, n) => m + '_' + n);
@@ -44,9 +44,16 @@ var cache = {
         var conn = pool.acquire();
         return conn.qpush(k, v);
     },
+    /**
+     * 获取队列值
+     * 
+     * @param {cache.key} k 队列key
+     * @returns 返回队列值
+     */
     qpop: async function (k) {
         var conn = pool.acquire();
-        return await conn.qpop(k);
+        let obj = await conn.qpop(k);
+        return obj;
     },
 }
 

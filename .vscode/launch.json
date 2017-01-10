@@ -3,7 +3,7 @@
     // Hover to view descriptions of existing attributes.
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
-    "configurations": [ 
+    "configurations": [
         {
             "type": "node",
             "runtimeArgs": [
@@ -43,8 +43,7 @@
             "env": {
                 "NODE_ENV": "test"
             }
-        }
-        ,
+        },
         {
             "type": "node",
             "runtimeArgs": [
@@ -64,8 +63,7 @@
             "env": {
                 "NODE_ENV": "test"
             }
-        } 
-         ,
+        },
         {
             "type": "node",
             "runtimeArgs": [
@@ -85,6 +83,26 @@
             "env": {
                 "NODE_ENV": "test"
             }
-        } 
+        },
+        {
+            "type": "node",
+            "runtimeArgs": [
+                "--harmony-async-await"
+            ],
+            "args": [
+                "--harmony-async-await"
+            ],
+            "request": "launch",
+            "name": "appTask",
+            "program": "${workspaceRoot}/src/appTask.js",
+            "cwd": "${workspaceRoot}",
+            "skipFiles": [
+                "node_modules/**/*.js"
+            ],
+            // "envFile": "${workspaceRoot}/.env"
+            "env": {
+                "NODE_ENV": "prod"
+            }
+        }
     ]
 }
