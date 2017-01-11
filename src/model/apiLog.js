@@ -17,8 +17,8 @@ module.exports = function (sequelize, DataTypes) {
             defaultValue: ''
         },
         useTime: {
-            type: DataTypes.STRING,
-            defaultValue: ''
+            type: DataTypes.INTEGER,
+            defaultValue: 0
         },
         statusCode: {
             type: DataTypes.STRING,

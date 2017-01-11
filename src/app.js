@@ -24,7 +24,10 @@ app.use(async (ctx, next) => {
         // require('./service/' + arr[0] + '/' + arr[1]);
         var cla = require('./service/' + arr[0] + '/' + arr[1]);
         try {
+            cr.d = cr.d || '{}'
             sr.d = await cla[arr[2]](JSON.parse(cr.d), cr);
+            console.log('d::', sr.d);
+
             // next();
             // sr.d = await new cla()[arr[2]](cr.d);
         } catch (err) {
@@ -35,7 +38,6 @@ app.use(async (ctx, next) => {
                 task.setTaskFast(task.DataType.x错误日志, {
                     method: cr.m,
                     cr: JSON.stringify(cr),
-                    sr: JSON.stringify(sr),
                     message: err.message,
                     stack: err.stack
                 });
@@ -45,7 +47,7 @@ app.use(async (ctx, next) => {
             }
         }
     }
-    task.setTaskFast(task.DataType.xAPI日志, {
+    sr.sc != statusCode.系统错误 && task.setTaskFast(task.DataType.xAPI日志, {
         IP: ctx.ip,
         method: cr.m,
         cr: JSON.stringify(cr),

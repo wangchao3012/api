@@ -60,5 +60,10 @@
         "promisify": true, // make api methods promisify.
         "thunkify": false // make api methods thunkify.
         // policy: Pool.policies.round_robin,
+    },
+    "sms": {
+        "url": "http://101.201.238.246/MessageTransferWebAppJs/servlet/messageTransferServiceServletByXml",
+        "userName": "fsll",
+        "password": ""
     }
 }
