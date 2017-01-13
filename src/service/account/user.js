@@ -5,6 +5,7 @@ const Role = require('../dbAccount').Role;
 const UserInRole = require('../dbAccount').UserInRole;
 const Tool = require('../../common/tool');
 const Cache = require('../../common/cache');
+const ccap = require('ccap');
 
 var userService = {
     login: async function (d, cr) {
@@ -65,6 +66,11 @@ var userService = {
                 break;
         }
         return getUserInfo(user, cr);
+    },
+    captcha: async function (d, cr) {
+        let data = ccap().get();
+        // console.log('data:', data);
+        return data[1];
     }
 
 }

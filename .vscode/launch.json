@@ -93,8 +93,8 @@
                 "--harmony-async-await"
             ],
             "request": "launch",
-            "name": "appTask",
-            "program": "${workspaceRoot}/src/appTask.js",
+            "name": "autoTaskFast",
+            "program": "${workspaceRoot}/src/autoTaskFast.js",
             "cwd": "${workspaceRoot}",
             "skipFiles": [
                 "node_modules/**/*.js"
