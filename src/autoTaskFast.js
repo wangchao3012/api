@@ -9,7 +9,7 @@ var autoTaskFast = {
                 let obj = await cache.qpop(cache.key.taskFast);
                 if (obj) {
                     await task.runTask(JSON.parse(obj));
-                    sleep(10);
+                    sleep(50);
                 }
                 else {
                     sleep(3000);
