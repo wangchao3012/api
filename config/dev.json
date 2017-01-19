@@ -6,14 +6,13 @@
     },
     "mysql": {
         "account": {
-            "dbname": "xz_prod_user",
+            "dbname": "xz_account",
             "user": "root",
-            "password": "1qaz@WSX",
+            "password": "123456",
             "options": {
-                // "host": "192.168.16.129",
-                "host": "10.25.24.72",
-                "port": 3306,
-                "dialect": "mysql",
+                "host": "192.168.16.133",
+                "port": 3307,
+                "dialect": "mariadb",
                 "pool": {
                     "max": 5,
                     "min": 1
@@ -25,17 +24,18 @@
                     // "allowNull":false
                     // "defaultValue":""
                 }
+                // ,
+                // "quoteIdentifiers": true
             }
         },
         "log": {
-            "dbname": "xz_prod_log",
+            "dbname": "xz_log",
             "user": "root",
-            "password": "1qaz@WSX",
+            "password": "123456",
             "options": {
-                // "host": "192.168.16.129",
-                "host": "10.25.24.72",
-                "port": 3306,
-                "dialect": "mysql",
+                "host": "192.168.16.133",
+                "port": 3307,
+                "dialect": "mariadb",
                 "pool": {
                     "max": 5,
                     "min": 1
@@ -51,7 +51,7 @@
         }
     },
     "ssdb": {
-        "host": "127.0.0.1",
+        "host": "192.168.16.133",
         "port": 8888,
         "auth": "undefined", // ssdb server auth password
         //authCallback: function (err, data) { if (err) throw err; },  // callback function on auth
@@ -60,5 +60,10 @@
         "promisify": true, // make api methods promisify.
         "thunkify": false // make api methods thunkify.
         // policy: Pool.policies.round_robin,
+    },
+    "sms": {
+        "url": "http://101.201.238.246/MessageTransferWebAppJs/servlet/messageTransferServiceServletByXml",
+        "userName": "fsll",
+        "password": ""
     }
 }

@@ -33,7 +33,47 @@
                 "--harmony-async-await"
             ],
             "request": "launch",
-            "name": "test",
+            "name": "prod",
+            "program": "${workspaceRoot}/src/app.js",
+            "cwd": "${workspaceRoot}",
+            "skipFiles": [
+                "node_modules/**/*.js"
+            ],
+            // "envFile": "${workspaceRoot}/.env"
+            "env": {
+                "NODE_ENV": "prod"
+            }
+        },
+        // {
+        //     "type": "node",
+        //     "runtimeArgs": [
+        //         "--harmony-async-await"
+        //     ],
+        //     "args": [
+        //         "--harmony-async-await"
+        //     ],
+        //     "request": "launch",
+        //     "name": "test",
+        //     "program": "${workspaceRoot}/test/account.test.js",
+        //     "cwd": "${workspaceRoot}",
+        //     "skipFiles": [
+        //         "node_modules/**/*.js"
+        //     ],
+        //     // "envFile": "${workspaceRoot}/.env"
+        //     "env": {
+        //         "NODE_ENV": "test"
+        //     }
+        // },
+        {
+            "type": "node",
+            "runtimeArgs": [
+                "--harmony-async-await"
+            ],
+            "args": [
+                "--harmony-async-await"
+            ],
+            "request": "launch",
+            "name": "test.app",
             "program": "${workspaceRoot}/src/app.js",
             "cwd": "${workspaceRoot}",
             "skipFiles": [
@@ -44,7 +84,7 @@
                 "NODE_ENV": "test"
             }
         },
-        {
+         {
             "type": "node",
             "runtimeArgs": [
                 "--harmony-async-await"
@@ -53,27 +93,7 @@
                 "--harmony-async-await"
             ],
             "request": "launch",
-            "name": "account.test",
-            "program": "${workspaceRoot}/test/account.test.js",
-            "cwd": "${workspaceRoot}",
-            "skipFiles": [
-                "node_modules/**/*.js"
-            ],
-            // "envFile": "${workspaceRoot}/.env"
-            "env": {
-                "NODE_ENV": "test"
-            }
-        },
-        {
-            "type": "node",
-            "runtimeArgs": [
-                "--harmony-async-await"
-            ],
-            "args": [
-                "--harmony-async-await"
-            ],
-            "request": "launch",
-            "name": "app.prod",
+            "name": "dev.app",
             "program": "${workspaceRoot}/src/app.js",
             "cwd": "${workspaceRoot}",
             "skipFiles": [
@@ -81,7 +101,7 @@
             ],
             // "envFile": "${workspaceRoot}/.env"
             "env": {
-                "NODE_ENV": "test"
+                "NODE_ENV": "dev"
             }
         },
         {
@@ -93,7 +113,7 @@
                 "--harmony-async-await"
             ],
             "request": "launch",
-            "name": "autoTaskFast",
+            "name": "test.autoTaskFast",
             "program": "${workspaceRoot}/src/autoTaskFast.js",
             "cwd": "${workspaceRoot}",
             "skipFiles": [
@@ -102,6 +122,27 @@
             // "envFile": "${workspaceRoot}/.env"
             "env": {
                 "NODE_ENV": "test"
+            }
+        }
+        ,
+        {
+            "type": "node",
+            "runtimeArgs": [
+                "--harmony-async-await"
+            ],
+            "args": [
+                "--harmony-async-await"
+            ],
+            "request": "launch",
+            "name": "dev.autoTaskFast",
+            "program": "${workspaceRoot}/src/autoTaskFast.js",
+            "cwd": "${workspaceRoot}",
+            "skipFiles": [
+                "node_modules/**/*.js"
+            ],
+            // "envFile": "${workspaceRoot}/.env"
+            "env": {
+                "NODE_ENV": "dev"
             }
         }
     ]

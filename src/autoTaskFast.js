@@ -2,6 +2,7 @@
 const cache = require('./common/cache')
 const sleep = require('thread-sleep');
 const task = require('./service/task');
+const moment=require('moment');
 var autoTaskFast = {
     taskFast: async function () {
         while (true) {
@@ -12,9 +13,9 @@ var autoTaskFast = {
                     // sleep(10);
                 }
                 else {
-                    console.log('没有数据，休息 3000 ms');
+                    console.log('没有数据，休息 1000 ms:',moment(new Date()).format('YYYY-MM-DD hh:mm:ss.SSS'));
                     
-                    sleep(3000); 
+                    sleep(1000); 
                 }
             } catch (err) {
                 sleep(3000);
