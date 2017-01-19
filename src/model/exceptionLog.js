@@ -25,8 +25,7 @@ module.exports = function (sequelize, DataTypes) {
             defaultValue: ''
         },
         stack: {
-            type: DataTypes.TEXT,
-            defaultValue: ''
+            type: DataTypes.TEXT, 
         },
     });
 };

@@ -9,10 +9,12 @@ var autoTaskFast = {
                 let obj = await cache.qpop(cache.key.taskFast);
                 if (obj) {
                     await task.runTask(JSON.parse(obj));
-                    sleep(50);
+                    // sleep(10);
                 }
                 else {
-                    sleep(3000);
+                    console.log('没有数据，休息 3000 ms');
+                    
+                    sleep(3000); 
                 }
             } catch (err) {
                 sleep(3000);

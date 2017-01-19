@@ -101,7 +101,7 @@
             ],
             // "envFile": "${workspaceRoot}/.env"
             "env": {
-                "NODE_ENV": "prod"
+                "NODE_ENV": "test"
             }
         }
     ]

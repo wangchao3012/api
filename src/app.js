@@ -47,16 +47,26 @@ app.use(async (ctx, next) => {
             }
         }
     }
-    sr.sc != statusCode.系统错误 && task.setTaskFast(task.DataType.xAPI日志, {
-        IP: ctx.ip,
-        method: cr.m,
-        cr: JSON.stringify(cr),
-        sr: JSON.stringify(sr),
-        useTime: new Date() - ctime,
-        statusCode: sr.sc,
-        sn: cr.sn,
-    });
-    ctx.body = sr;
+
+    if (cr.m == 'account.sys.captcha') {
+        ctx.type = 'image/png';
+        ctx.body = sr.d;
+    }
+    else {
+        ctx.body = sr;
+        // for (var i = 0; i < 1000; i++) {
+            sr.sc != statusCode.系统错误 && task.setTaskFast(task.DataType.xAPI日志, {
+                IP: ctx.ip,
+                method: cr.m,
+                cr: cr,
+                sr: sr,
+                useTime: new Date() - ctime,
+                statusCode: sr.sc,
+                sn: cr.sn,
+            });
+        // }
+
+    }
 });
 var statusCode = {
     成功: 0,

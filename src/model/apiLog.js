@@ -9,20 +9,19 @@ module.exports = function (sequelize, DataTypes) {
             defaultValue: ''
         },
         cr: {
-            type: DataTypes.TEXT,
-            defaultValue: ''
+            type: DataTypes.TEXT, 
         },
         sr: {
-            type: DataTypes.TEXT,
-            defaultValue: ''
+            type: DataTypes.TEXT, 
+            // type: DataTypes.TEXT('long'), 
         },
         useTime: {
             type: DataTypes.INTEGER,
             defaultValue: 0
         },
         statusCode: {
-            type: DataTypes.STRING,
-            defaultValue: ''
+             type: DataTypes.INTEGER,
+            defaultValue: 0
         },
         sn: {
             type: DataTypes.STRING,
