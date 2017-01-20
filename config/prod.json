@@ -37,7 +37,7 @@
                 "port": 3306,
                 "dialect": "mariadb",
                 "pool": {
-                    "max": 5,
+                    "max": 10,
                     "min": 1
                 },
                 "define": {
@@ -51,11 +51,11 @@
         }
     },
     "ssdb": {
-        "host": "10.25.24.72",
+        "host": "127.0.0.1",
         "port": 8888,
         "auth": "undefined", // ssdb server auth password
         //authCallback: function (err, data) { if (err) throw err; },  // callback function on auth
-        "size": 3, // connection pool size
+        "size": 10, // connection pool size
         "timeout": 0,
         "promisify": true, // make api methods promisify.
         "thunkify": false // make api methods thunkify.

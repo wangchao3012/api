@@ -49,5 +49,9 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             defaultValue: ''
         },
+        isLoacked: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
+        }
     });
 }

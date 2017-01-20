@@ -12,25 +12,27 @@ var cache = {
     keys: function (...x) {
         return x.reduce((m, n) => m + '_' + n);
     },
-    set: async function (key, val) {
+    set: async function (k, v, m = 30, h = 0, d = 0) {
 
-        var conn = pool.acquire();
+        let conn = pool.acquire();
         // var a = yield conn.set('key', 'val222');
-        var b = await conn.get('key');
+        let b = await conn.setx(k, v, (m + h * 60 + d * 24) * 60000);
+        return b;
+
+    },
+    get: async function (k, v, m = 30, h = 0, d = 0) {
+
+        var conn = pool.acquire(); 
+        var b = await conn.getx(k);
 
         console.log(b);  // 1 'val' 
         return b;
 
     },
-    get: async function () {
+    getObject: function (k, fun, m, h, d) {
+        let v = cache.get(k, fun, m, h, d);
 
-        var conn = pool.acquire();
-        // var a = yield conn.set('key', 'val222');
-        var b = await conn.get('key');
-
-        console.log(b);  // 1 'val' 
-        return b;
-
+        return JSON.parse(v);
     },
     hset: async function (n, k, v) {
         var conn = pool.acquire();

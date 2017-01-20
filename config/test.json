@@ -6,7 +6,7 @@
     },
     "mysql": {
         "account": {
-            "dbname": "xz_test_account",
+            "dbname": "xz_account",
             "user": "root",
             "password": "123456",
             "options": {
@@ -29,7 +29,7 @@
             }
         },
         "log": {
-            "dbname": "xz_test_log",
+            "dbname": "xz_log",
             "user": "root",
             "password": "123456",
             "options": {
@@ -55,7 +55,7 @@
         "port": 8888,
         "auth": "undefined", // ssdb server auth password
         //authCallback: function (err, data) { if (err) throw err; },  // callback function on auth
-        "size": 1, // connection pool size
+        "size": 20, // connection pool size
         "timeout": 0,
         "promisify": true, // make api methods promisify.
         "thunkify": false // make api methods thunkify.
