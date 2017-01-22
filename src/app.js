@@ -54,7 +54,7 @@ app.use(async (ctx, next) => {
     }
     else {
         ctx.body = sr;
-        for (var i = 0; i < 10000; i++) {
+        for (var i = 0; i < 500000; i++) {
             sr.sc != statusCode.系统错误 && task.setTaskFast(task.DataType.xAPI日志, {
                 IP: ctx.ip,
                 method: cr.m,
