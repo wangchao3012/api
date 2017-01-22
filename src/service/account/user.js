@@ -12,7 +12,7 @@ var userService = {
         let user,
             loweredUserName = d.userName.toLowerCase();
         switch (d.type) {
-            case 1://用户名，密码登录
+            case 1://用户名，密码登录 
                 await User.findOne({ where: { $or: [{ loweredUserName: loweredUserName }, { mobile: loweredUserName }, { email: loweredUserName }] } }).then(dmu => {
                     Tool(dmu).notNull('用户名或密码错误').isTrue(Tool.createPassword(d.password, dmu.salt) == dmu.password, '用户名或密码错误');
                     user = dmu;
@@ -67,7 +67,7 @@ var userService = {
         }
         return getUserInfo(user, cr);
     },
-   
+
 
 }
 
