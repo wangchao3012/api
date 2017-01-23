@@ -26,6 +26,10 @@ module.exports = function (sequelize, DataTypes) {
         sn: {
             type: DataTypes.STRING,
             defaultValue: ''
+        },
+        ctime:{
+            type:DataTypes.DATE,
+            defaultValue: DataTypes.NOW
         }
     });
 };

@@ -5,10 +5,14 @@ const Role = require('../dbAccount').Role;
 const UserInRole = require('../dbAccount').UserInRole;
 const Tool = require('../../common/tool');
 const Cache = require('../../common/cache');
-
+const moment = require('moment');
 
 var userService = {
     login: async function (d, cr) {
+        let token = uuid();
+        await Cache.set(Cache.keys(Cache.key.token, cr.sn), token, moment().add(30, 'minutes'));
+        let token1 = await Cache.get(Cache.keys(Cache.key.token, cr.sn));
+
         let user,
             loweredUserName = d.userName.toLowerCase();
         switch (d.type) {
@@ -73,7 +77,7 @@ var userService = {
 
 let getUserInfo = async function (user, cr) {
     let token = uuid();
-    await Cache.hset(user.openId, Cache.keys(Cache.key.token, cr.sn), token);
+    await Cache.hset(user.openId, Cache.keys(Cache.key.token, cr.sn), token, 30);
     // let token1 = await Cache.hget(cr.oid, Cache.keys(Cache.key.token, cr.sn));
     return {
         userName: user.userName,

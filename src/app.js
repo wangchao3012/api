@@ -13,29 +13,27 @@ const bodyparser = require('koa-bodyparser')();
 app.use(convert(bodyparser));
 
 const tool = require('./common/tool');
-const task = require('./common/task');
-// let service = require('./service/index');
+const taskService = require('./service/task');
+const service = require('./service/index');
+const model = require('./model/model');
+
+
 app.use(async (ctx, next) => {
-    let ctime = new Date();
+    let beginTime = new Date();
     let cr = ctx.request.body;
     var sr = await checkAuth(cr);
-    if (sr.sc == statusCode.成功) {
+    if (sr.sc == model.StatusCode.成功) {
         var arr = cr.m.split('.');
-        // require('./service/' + arr[0] + '/' + arr[1]);
-        var cla = require('./service/' + arr[0] + '/' + arr[1]);
+        // var service = require('./service/' + arr[0] + '/' + arr[1]);
         try {
-            cr.d = cr.d || '{}'
-            sr.d = await cla[arr[2]](JSON.parse(cr.d), cr);
-            console.log('d::', sr.d);
-
-            // next();
-            // sr.d = await new cla()[arr[2]](cr.d);
+            cr.d = cr.d || '{}';
+            sr.d = await service[arr[0]][arr[1]](JSON.parse(cr.d), cr);
         } catch (err) {
             console.log('err::', err)
             if (err.stack) {
                 sr.msg = '服务器异常，请稍后重试';
-                sr.sc = statusCode.系统错误;
-                task.setTaskFast(task.DataType.x错误日志, {
+                sr.sc = model.StatusCode.系统错误;
+                taskService.setTaskFast(model.Task.DataType.x错误日志, {
                     method: cr.m,
                     cr: JSON.stringify(cr),
                     message: err.message,
@@ -43,7 +41,7 @@ app.use(async (ctx, next) => {
                 });
             } else {
                 sr.msg = err;
-                sr.sc = statusCode.失败;
+                sr.sc = model.StatusCode.失败;
             }
         }
     }
@@ -54,56 +52,47 @@ app.use(async (ctx, next) => {
     }
     else {
         ctx.body = sr;
-        for (var i = 0; i < 500000; i++) {
-            sr.sc != statusCode.系统错误 && task.setTaskFast(task.DataType.xAPI日志, {
-                IP: ctx.ip,
-                method: cr.m,
-                cr: cr,
-                sr: sr,
-                useTime: new Date() - ctime,
-                statusCode: sr.sc,
-                sn: cr.sn,
-            });
-        }
+        // for (var i = 0; i < 500000; i++) {
+        let endTime = new Date();
+        sr.sc != model.StatusCode.系统错误 && taskService.setTaskFast(model.Task.DataType.xAPI日志, {
+            IP: ctx.ip,
+            method: cr.m,
+            cr: cr,
+            sr: sr,
+            useTime: endTime - beginTime,
+            statusCode: sr.sc,
+            sn: cr.sn,
+            ctime: endTime,
+        });
+        // }
 
     }
 });
-var statusCode = {
-    成功: 0,
-    失败: -1,
-    未登录: -2,
-    系统错误: -4,
-};
 var sr = {
     sc: -1,//状态号
     s: '',//返回状态信息
     d: null
 };
-// process.env.NODE_ENV = 'prod';
-// console.log('env::', process.env.NODE_ENV);
+
 const defaultToken = config.app.defaultToken;
 const noCheckToken = ['account.user.login', 'user.register'];
-
-
-
 
 var checkAuth = async function (cr) {
 
     if (cr.test || (noCheckToken.indexOf(cr.m) != -1 && tool.checkSign(cr, defaultToken))) {
-        return { sc: statusCode.成功 };
+        return { sc: model.StatusCode.成功 };
     }
     else {
         // var flag = await cache.hset(cr.uid, cr.si, uuid());
         var token = await cache.hget(cr.uid, cr.sn);
         if (tool.checkSign(cr, token)) {
-            return { sc: statusCode.成功, si: token };
+            return { sc: model.StatusCode.成功, si: token };
         }
         else {
-            return { sc: statusCode.未登录, s: '签名不正确，正确签名字符串为：' + tool.signJoin(cr, token) };
+            return { sc: model.StatusCode.未登录, s: '签名不正确，正确签名字符串为：' + tool.signJoin(cr, token) };
         }
     }
 }
-
 
 app.on('error', (err, ctx) => {
     console.error('err:' + err.message + '\r\n' + err.stack);
@@ -111,6 +100,7 @@ app.on('error', (err, ctx) => {
 
 app.listen(config.port);
 
+console.log('env::', process.env.NODE_ENV);
 console.log('服务启动成功:' + config.port)
 module.exports = app;
 

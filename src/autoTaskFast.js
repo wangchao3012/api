@@ -1,7 +1,7 @@
 
 const cache = require('./common/cache')
 const sleep = require('thread-sleep');
-const task = require('./service/task');
+const taskService = require('./service/task');
 const moment = require('moment');
 const log4js = require('log4js');
 // const logger = log4js.getLogger();
@@ -14,17 +14,22 @@ logger.setLevel('ERROR');
 var autoTaskFast = {
     taskFast: async function () {
         while (true) {
-            let obj = null;
+            let obj  ;
             try {
-                obj = await cache.qpop(cache.key.taskFast);
+                obj = JSON.parse(await cache.qpop(cache.key.taskFast))  ; 
                 if (obj) {
-                    await task.runTask(JSON.parse(obj));
+                    await taskService.runTask(obj);
                 }
                 else {
                     console.log('没有数据，休息 1000 ms:', moment(new Date()).format('YYYY-MM-DD hh:mm:ss.SSS'));
                     sleep(1000);
                 }
             } catch (err) {
+
+                if (obj.error < 3) {
+                    obj.error++;
+                    taskService.setTaskFast(obj.dataType, obj.data,obj. error);
+                }
                 logger.trace(err.stack)
                 logger.error(obj)
                 // sleep(10);

@@ -7,16 +7,20 @@ const rp = require('request-promise');
 
 const sms = require('../../common/sms');
 const ccap = require('ccap');
+const moment = require('moment');
 
 
 var sysService = {
     captcha: async function (d, cr) {
+        let token = uuid();
+        await Cache.hset('11', Cache.keys(Cache.key.token, cr.sn), token, moment().add(30, 'minutes'));
+        let token1 = await Cache.hget('11', Cache.keys(Cache.key.token, cr.sn));
         let data = ccap({
             width: 100,
             height: 40,
             offset: 22,
             quality: 10,
-            fontsize:30,
+            fontsize: 30,
             generate: function () {
                 return (parseInt(Math.random() * 9000) + 1000) + ""
             }
