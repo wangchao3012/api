@@ -45,14 +45,16 @@ tool.prototype = {
         }
         return this;
     },
-    isTrue: function (flag, msg) {
+    isTrue: function (flag, msg, call) {
         if (!flag) {
+        call&&    call()
             throw msg;
         }
         return this;
     },
-    isFalse: function (flag, msg) {
+    isFalse: function (flag, msg, call) {
         if (flag) {
+             call&&    call()
             throw msg;
         }
         return this;

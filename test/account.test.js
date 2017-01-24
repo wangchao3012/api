@@ -30,18 +30,18 @@ describe('用户.', function () {
         opt.body = tool.sign(opt.body, defaultToken);
 
         it('成功注册', function (done) {
-            // for (var i = 0; i < 10; i++) {
-            // opt.body.d = JSON.stringify({
-            //     type: 1,
-            //     userName: 'admin' + new Date().getTime() + i,
-            //     password: '111111'
-            // });
-            // opt.body = tool.sign(opt.body, defaultToken);
-            rp(opt).then(res => {
-                res.sc.should.equal(0);
-                done();
-            });
-            // }
+            for (var i = 0; i < 10; i++) {
+                opt.body.d = JSON.stringify({
+                    type: 1,
+                    userName: 'admin' + new Date().getTime() + i,
+                    password: '111111'
+                });
+                opt.body = tool.sign(opt.body, defaultToken);
+                rp(opt).then(res => {
+                    res.sc.should.equal(0);
+                    done();
+                });
+            }
 
         });
 

@@ -47,11 +47,24 @@ module.exports = function (sequelize, DataTypes) {
         },
         email: {
             type: DataTypes.STRING,
-            defaultValue: ''
+            // allowNull: true,
+            // defaultValue: '',
+            validate: {
+                isEmail: {
+                    args: true,
+                    msg: '邮箱格式不正确'
+                },
+            }
         },
         isLoacked: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
         }
-    });
+    }, {
+            getterMethods: {
+                upperUserName: function () {
+                    return this.userName.toUpperCase();
+                }
+            }
+        });
 }

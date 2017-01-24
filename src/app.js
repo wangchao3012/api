@@ -29,8 +29,16 @@ app.use(async (ctx, next) => {
             cr.d = cr.d || '{}';
             sr.d = await service[arr[0]][arr[1]](JSON.parse(cr.d), cr);
         } catch (err) {
-            console.log('err::', err)
-            if (err.stack) {
+
+
+            sr.sc = model.StatusCode.失败;
+            if (!err.name) {
+                sr.msg = err;
+            } else if (err.name == 'SequelizeValidationError') {
+                sr.msg = err.errors[0].message;
+            }
+            else {
+                console.error('err::', err)
                 sr.msg = '服务器异常，请稍后重试';
                 sr.sc = model.StatusCode.系统错误;
                 taskService.setTaskFast(model.Task.DataType.x错误日志, {
@@ -39,14 +47,11 @@ app.use(async (ctx, next) => {
                     message: err.message,
                     stack: err.stack
                 });
-            } else {
-                sr.msg = err;
-                sr.sc = model.StatusCode.失败;
             }
         }
     }
 
-    if (cr.m == 'account.sys.captcha') {
+    if (cr.m == 'sys.captcha') {
         ctx.type = 'image/png';
         ctx.body = sr.d;
     }
@@ -104,10 +109,6 @@ console.log('env::', process.env.NODE_ENV);
 console.log('服务启动成功:' + config.port)
 module.exports = app;
 
-// const dbAccount = require('./service/dbAccount');
-// new dbAccount().sync();
-// const dbLog = require('./service/dbLog');
-// new dbLog().sync();
 
 const dbAccount = require('./service/dbAccount');
 const dbLog = require('./service/dbLog')

@@ -16,6 +16,10 @@ module.exports = function (sequelize, DataTypes) {
         pars: {
             type: DataTypes.STRING,
             defaultValue: ''
-        }
+        },
+        remark: {
+            type: DataTypes.STRING,
+            defaultValue: ''
+        },
     });
 }

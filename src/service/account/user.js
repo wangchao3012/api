@@ -10,15 +10,17 @@ const moment = require('moment');
 var userService = {
     login: async function (d, cr) {
         let token = uuid();
-        await Cache.set(Cache.keys(Cache.key.token, cr.sn), token, moment().add(30, 'minutes'));
-        let token1 = await Cache.get(Cache.keys(Cache.key.token, cr.sn));
-
         let user,
             loweredUserName = d.userName.toLowerCase();
         switch (d.type) {
             case 1://用户名，密码登录 
                 await User.findOne({ where: { $or: [{ loweredUserName: loweredUserName }, { mobile: loweredUserName }, { email: loweredUserName }] } }).then(dmu => {
-                    Tool(dmu).notNull('用户名或密码错误').isTrue(Tool.createPassword(d.password, dmu.salt) == dmu.password, '用户名或密码错误');
+                    Tool(dmu).notNull('用户名或密码错误').isFalse(dmu.isLoacked, '用户已锁定，请使用手机号动态验证码方式登录')
+                        .isTrue(Tool.createPassword(d.password, dmu.salt) == dmu.password, '用户名或密码错误', () => {
+                            dmu.passwordErrorNum++
+                            dmu.passwordErrorNum > 10 && (dmu.isLoacked = true)
+                            dmu.save();
+                        });
                     user = dmu;
                 })
                 break;
@@ -52,7 +54,7 @@ var userService = {
                         Tool(dmuser).isNull('用户名已存在');
                         let salt = uuid();
                         let password = Tool.createPassword(d.password, salt);
-                        return User.create({ userName: d.userName, loweredUserName: loweredUserName, salt: salt, password: password, openId: '111' }, { transaction: t }).then(dmuser1 => {
+                        return User.create({ userName: d.userName, loweredUserName: loweredUserName, salt: salt, password: password, openId: '111', email: 'aaa' }, { transaction: t }).then(dmuser1 => {
                             return Role.findOne({ code: 'user' }).then(dmrole => {
                                 dmuser1.setRoles(dmrole);
                                 return dmuser1;

@@ -54,7 +54,7 @@
         "host": "127.0.0.1",
         "port": 8888,
         "auth": "undefined", // ssdb server auth password
-        //authCallback: function (err, data) { if (err) throw err; },  // callback function on auth
+        "authCallback": null,  // callback function on auth
         "size": 20, // connection pool size
         "timeout": 0,
         "promisify": true, // make api methods promisify.

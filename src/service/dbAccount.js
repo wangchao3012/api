@@ -24,11 +24,38 @@ Menu.belongsToMany(Role, { 'through': RoleInMenu, foreignKey: 'menuId', targetKe
 let MessageTemp = sequelize.import('../model/messageTemp');
 
 
+// TODO 发布后删除
+const uuid = require('uuid/v4'); 
+const Tool = require('../common/tool');
+
 sequelize.sync({ force: true }).then(res => {
     console.info("%s   数据库同步成功", config.mysql.account.dbname);
     // 添加基础数据
 
     let rs = Role.bulkCreate([{ name: '系统管理员', code: 'sysAdmin', sort: 1 }, { name: '管理员', code: 'admin', sort: 2 }, { name: '普通用户', code: 'user', sort: 3 }])
+
+
+
+      sequelize.transaction(t => {
+        return User.findOne({
+            where: {
+                $or: [{ loweredUserName: 'admin' }, { mobile: 'admin' }, { email: 'admin' }]
+            }
+        }).then(dmuser => {
+            if (dmuser != null) {
+                return
+            } 
+            let salt = uuid();
+            let password = Tool.createPassword('111111', salt);
+            return User.create({ userName: 'admin', loweredUserName: 'admin', salt: salt, password: password, openId: '111' }, { transaction: t }).then(dmuser1 => {
+                return Role.findOne({ code: 'sysAdmin' }).then(dmrole => {
+                    dmuser1.setRoles(dmrole);
+                    return dmuser1;
+                });
+            });
+
+        });
+    });
 
     // sequelize.transaction(t => {
     //     return User.create({ name: '系统管理员1' }, { transaction: t }).then(u => {

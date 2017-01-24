@@ -46,7 +46,6 @@
     "supertest": "^2.0.1",
     "thread-sleep": "^2.0.0",
     "uuid": "^3.0.1",
-    "xml2js": "^0.4.17",
     "xml2json": "^0.10.0"
   }
 }

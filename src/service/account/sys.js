@@ -2,7 +2,6 @@
 const Tool = require('../../common/tool');
 const Cache = require('../../common/cache');
 const uuid = require('uuid/v4');
-const tasl = require('../../common/task');
 const rp = require('request-promise');
 
 const sms = require('../../common/sms');
@@ -12,9 +11,8 @@ const moment = require('moment');
 
 var sysService = {
     captcha: async function (d, cr) {
-        let token = uuid();
-        await Cache.hset('11', Cache.keys(Cache.key.token, cr.sn), token, moment().add(30, 'minutes'));
-        let token1 = await Cache.hget('11', Cache.keys(Cache.key.token, cr.sn));
+        let verCode = Math.random().toString().substr(2, 4);
+        await Cache.set(Cache.keys(Cache.key.imgVerCode, cr.sn), verCode, 30);
         let data = ccap({
             width: 100,
             height: 40,
@@ -22,15 +20,18 @@ var sysService = {
             quality: 10,
             fontsize: 30,
             generate: function () {
-                return (parseInt(Math.random() * 9000) + 1000) + ""
+                return verCode;
             }
         }).get();
         return data[1];
     },
-    sendSMS: async function (d) {
-        await sms.sendSMS({ mobile: '15901793556', content: '【上海黑摩】5639 注册验证码', batchId: 111 })
-
-
+    sendSMS: async function (d, cr) {
+        let imgVerCode = await Cache.get(Cache.keys(Cache.key.imgVerCode, cr.sn));
+        Tool().isTrue(imgVerCode == d.verCode, '图片验证码不正确');
+        let verCode = await Cache.get(Cache.keys(Cache.key.smsVerCode, cr.sn), () => {
+            return Math.random().toString().substr(2, 4);
+        }, moment().add(30, 'minutes'));
+        await sms.sendSMS({ mobile: d.mobile, content: `【上海黑摩】${verCode} 注册验证码`, batchId: d.mobile })  
     }
 }
 module.exports = sysService;

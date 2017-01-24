@@ -1,6 +1,6 @@
 const config = require('config');
-const rp = require('request-promise');
-const xml2js = require('xml2js');
+const rp = require('request-promise'); 
+const xml2json = require('xml2json');
 
 let sms = {
     sendSMS: async function (opt) {
@@ -9,16 +9,10 @@ let sms = {
         url = encodeURI(url);
 
         let r = await rp(url).then(res => {
-              xml2js.parseString(res, { explicitArray: false }, (er, re) => {
-                if (re.message.body.field[0]['_'] != '0') {
-                    throw '发送验证码失败'
-                } 
-            })
-            console.log('r:::', res);
-        }
-        ).catch(err => {
-            console.log('err::', err);
-
+            let data = xml2json.toJson(res, { object: true });
+            if (xml2json.toJson(res, { object: true }).message.body.field[0].$t != '0') {
+                throw '发送验证码失败'
+            };
         });
 
 
