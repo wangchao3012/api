@@ -22,21 +22,38 @@ Role.belongsToMany(Menu, { 'through': RoleInMenu, foreignKey: 'roleId', targetKe
 Menu.belongsToMany(Role, { 'through': RoleInMenu, foreignKey: 'menuId', targetKey: 'id', });
 
 let MessageTemp = sequelize.import('../model/messageTemp');
+let MessageTempContent = sequelize.import('../model/messageTempContent');
+MessageTemp.hasMany(MessageTempContent, { foreignKey: 'messageTempId', targetKey: 'id', as: 'MessageTempContent' });
 
+// MessageTemp.hasMany(MessageTempContent);
+MessageTempContent.belongsTo(MessageTemp);
 
+// NOTE: nodejs
 // TODO 发布后删除
-const uuid = require('uuid/v4'); 
+const uuid = require('uuid/v4');
 const Tool = require('../common/tool');
 
 sequelize.sync({ force: true }).then(res => {
     console.info("%s   数据库同步成功", config.mysql.account.dbname);
     // 添加基础数据
 
+
+    sequelize.transaction(t => {
+
+        return MessageTemp.create({
+            name: '注册验证码',
+            code: 'register.VerCode'
+        }, { transaction: t }).then(mt => {
+            mt.createMessageTempContent({ content: '【上海】${verCode} 注册验证码' });
+            mt.createMessageTempContent({ content: '【上海】${verCode} 登录证码' });
+            mt.createMessageTempContent({ content: '【上海】${verCode} 修改密码证码' });
+        });
+    });
+
+    // 初始化用户
     let rs = Role.bulkCreate([{ name: '系统管理员', code: 'sysAdmin', sort: 1 }, { name: '管理员', code: 'admin', sort: 2 }, { name: '普通用户', code: 'user', sort: 3 }])
 
-
-
-      sequelize.transaction(t => {
+    sequelize.transaction(t => {
         return User.findOne({
             where: {
                 $or: [{ loweredUserName: 'admin' }, { mobile: 'admin' }, { email: 'admin' }]
@@ -44,10 +61,10 @@ sequelize.sync({ force: true }).then(res => {
         }).then(dmuser => {
             if (dmuser != null) {
                 return
-            } 
-            let salt = uuid();
-            let password = Tool.createPassword('111111', salt);
-            return User.create({ userName: 'admin', loweredUserName: 'admin', salt: salt, password: password, openId: '111' }, { transaction: t }).then(dmuser1 => {
+            }
+            // let salt = uuid();
+            // let password = Tool.createPassword('111111', salt);
+            return User.create({ userName: 'Admin', password: '111111', openId: '111'  }, { transaction: t }).then(dmuser1 => {
                 return Role.findOne({ code: 'sysAdmin' }).then(dmrole => {
                     dmuser1.setRoles(dmrole);
                     return dmuser1;
@@ -56,6 +73,12 @@ sequelize.sync({ force: true }).then(res => {
 
         });
     });
+
+
+
+
+
+
 
     // sequelize.transaction(t => {
     //     return User.create({ name: '系统管理员1' }, { transaction: t }).then(u => {
@@ -80,14 +103,18 @@ sequelize.sync({ force: true }).then(res => {
 
     // console.info('rs:', rs);
     // var dm = sequelize.transaction(t => {
-    // return User.create({ name: 'name1' }, { transaction: t }).then(u => {
+    //     return User.create({ name: 'name1' }, { transaction: t }).then(u => {
 
-    // u.addThreeUser({ name: 'b1' }, { transaction: t });
-    // return User.create({ name: 'b1', passwordErrorNum: 'ssss' }, { transaction: t });
-    // return u.setThreeUser({ nickname: '昵称' }, { transaction: t }).then(tu => {
-    //     return tu;
+    //         u.addThreeUser({ name: 'b1' }, { transaction: t });
+    //         // return User.create({ name: 'b1', passwordErrorNum: 'ssss' }, { transaction: t });
+    //         return u.setThreeUser({ nickname: '昵称' }, { transaction: t }).then(tu => {
+    //             return tu;
+    //         });
+    //     })
     // });
-    // })
+
+
+
 
 
     // User.create({ name: '管理员', }, { transaction: t });
@@ -112,3 +139,7 @@ exports.Menu = Menu;
 exports.ThreeUser = ThreeUser;
 exports.UserInRole = UserInRole;
 exports.RoleInMenu = RoleInMenu;
+
+
+exports.MessageTemp = MessageTemp;
+exports.MessageTempContent = MessageTempContent;

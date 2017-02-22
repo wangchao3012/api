@@ -1,4 +1,6 @@
 'use strict'
+const uuid = require('uuid/v4');
+const Tool = require('../common/tool');
 module.exports = function (sequelize, DataTypes) {
     return sequelize.define('user', {
         name: {
@@ -11,19 +13,23 @@ module.exports = function (sequelize, DataTypes) {
         },
         userName: {
             type: DataTypes.STRING,
-            defaultValue: ''
+            defaultValue: '',
+            set: function (val) {
+                this.setDataValue('userName', val)
+                this.setDataValue('loweredUserName', val.toLowerCase())
+            }
         },
         loweredUserName: {
-            type: DataTypes.STRING,
-            defaultValue: ''
+            type: DataTypes.STRING(50),
+            defaultValue: '',
         },
         head: {
             type: DataTypes.STRING,
             defaultValue: ''
         },
         mobile: {
-            type: DataTypes.STRING,
-            defaultValue: ''
+            type: DataTypes.STRING(11),
+            defaultValue: '',
         },
         roleIds: {
             type: DataTypes.STRING,
@@ -35,11 +41,15 @@ module.exports = function (sequelize, DataTypes) {
         },
         salt: {
             type: DataTypes.STRING,
-            defaultValue: ''
         },
         password: {
             type: DataTypes.STRING,
-            defaultValue: ''
+            defaultValue: '',
+            set: function (val) {
+                let salt = uuid();
+                this.setDataValue('salt', salt);
+                this.setDataValue('password', Tool.createPassword(val, salt));
+            }
         },
         passwordErrorNum: {
             type: DataTypes.INTEGER,
@@ -47,9 +57,11 @@ module.exports = function (sequelize, DataTypes) {
         },
         email: {
             type: DataTypes.STRING,
-            // allowNull: true,
+            allowNull: true,
             // defaultValue: '',
             validate: {
+                // notEmpty: true, 
+                // notNull: false, 
                 isEmail: {
                     args: true,
                     msg: '邮箱格式不正确'
@@ -65,6 +77,16 @@ module.exports = function (sequelize, DataTypes) {
                 upperUserName: function () {
                     return this.userName.toUpperCase();
                 }
+            },
+            indexes: [{
+                unique: true,
+                fields: ['loweredUserName'] //索引列内容长度不能太长
+            },
+            {
+                unique: true,
+                fields: ['mobile'] //索引列内容长度不能太长
             }
-        });
+            ]
+        }
+    );
 }

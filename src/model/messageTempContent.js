@@ -1,14 +1,22 @@
 'use strict'
 module.exports = function (sequelize, DataTypes) {
-    return sequelize.define('messageTemp', {
-        name: {
+    return sequelize.define('messageTempContent', {
+        messageTempId: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0
+        },
+        sendTypeId: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0
+        },
+        sendTypeName: {
             type: DataTypes.STRING,
             defaultValue: ''
         },
-        code: {
+        content: {
             type: DataTypes.STRING,
             defaultValue: ''
-        }, 
+        },
         pars: {
             type: DataTypes.STRING,
             defaultValue: ''

@@ -54,7 +54,14 @@ var userService = {
                         Tool(dmuser).isNull('用户名已存在');
                         let salt = uuid();
                         let password = Tool.createPassword(d.password, salt);
-                        return User.create({ userName: d.userName, loweredUserName: loweredUserName, salt: salt, password: password, openId: '111', email: 'aaa' }, { transaction: t }).then(dmuser1 => {
+                        return User.create({
+                            userName: d.userName,
+                            loweredUserName: loweredUserName,
+                            salt: salt,
+                            password: password,
+                            openId: '111',
+                            // email: 'aaa'
+                        }, { transaction: t }).then(dmuser1 => {
                             return Role.findOne({ code: 'user' }).then(dmrole => {
                                 dmuser1.setRoles(dmrole);
                                 return dmuser1;

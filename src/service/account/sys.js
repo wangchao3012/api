@@ -7,7 +7,7 @@ const rp = require('request-promise');
 const sms = require('../../common/sms');
 const ccap = require('ccap');
 const moment = require('moment');
-
+const model = require('../../model/model');
 
 var sysService = {
     captcha: async function (d, cr) {
@@ -31,7 +31,11 @@ var sysService = {
         let verCode = await Cache.get(Cache.keys(Cache.key.smsVerCode, cr.sn), () => {
             return Math.random().toString().substr(2, 4);
         }, moment().add(30, 'minutes'));
-        await sms.sendSMS({ mobile: d.mobile, content: `【上海黑摩】${verCode} 注册验证码`, batchId: d.mobile })  
+        await sms.sendSMS({ mobile: d.mobile, content: `【上海黑摩】${verCode} 注册验证码`, batchId: d.mobile })
+    },
+    getType: async function (d) {
+        return model[d.name]
+        
     }
 }
 module.exports = sysService;
