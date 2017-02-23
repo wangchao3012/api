@@ -72,7 +72,7 @@ var userService = {
                 });
 
                 break;
-            case 2:
+            case 2://手机号、[第三方]、验证码
 
                 break;
             default:
@@ -80,7 +80,9 @@ var userService = {
         }
         return getUserInfo(user, cr);
     },
+    editPassword: async function () {
 
+    }
 
 }
 

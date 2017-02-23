@@ -7,7 +7,7 @@ module.exports = function (sequelize, DataTypes) {
         },
         sendTypeId: {
             type: DataTypes.INTEGER,
-            defaultValue: 0
+            defaultValue: -1
         },
         sendTypeName: {
             type: DataTypes.STRING,
