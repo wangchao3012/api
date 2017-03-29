@@ -5,7 +5,7 @@
   "main": "src/app.js",
   "scripts": {
     "startautotaskfast": "set NODE_ENV=prod;node --harmony-async-await src/autoTaskFast.js",
-    "start": "set NODE_ENV=prod;node --harmony-async-await src/app.js",
+    "start": "set NODE_ENV=test&& node --harmony-async-await src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "rc": "set NODE_ENV=prod; node --harmony-async-await src\\app.js"
   },
@@ -26,26 +26,26 @@
   "dependencies": {
     "ccap": "^0.6.10",
     "config": "^1.25.1",
-    "koa": "^2.0.0",
-    "koa-bodyparser": "^2.3.0",
+    "koa": "^2.2.0",
+    "koa-bodyparser": "^4.2.0",
     "koa-convert": "^1.2.0",
     "koa-cors": "0.0.16",
     "koa-router": "^7.1.0",
-    "log4js": "^1.1.0",
+    "log4js": "^1.1.1",
     "md5": "^2.2.1",
     "mocha": "^3.2.0",
-    "moment": "^2.17.1",
+    "moment": "^2.18.1",
     "mysql": "^2.13.0",
-    "node-gyp": "^3.5.0",
+    "node-gyp": "^3.6.0",
     "rebuild": "^0.1.2",
-    "request": "^2.79.0",
-    "request-promise": "^4.1.1",
-    "sequelize": "^3.30.2",
-    "should": "^11.2.0",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.0",
+    "sequelize": "^3.30.4",
+    "should": "^11.2.1",
     "ssdb": "^0.3.8",
-    "supertest": "^2.0.1",
+    "supertest": "^3.0.0",
     "thread-sleep": "^2.0.0",
     "uuid": "^3.0.1",
-    "xml2json": "^0.10.0"
+    "xml2json": "^0.11.0"
   }
 }
