@@ -9,9 +9,13 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             defaultValue: ''
         },
+        uuid: {
+            type: DataTypes.STRING,
+            defaultValue: ''
+        },
         threeTypeId: {
             type: DataTypes.INTEGER,
-            defaultValue: 0
+            defaultValue: -1
         },
         nickname: {
             type: DataTypes.STRING,

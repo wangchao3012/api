@@ -43,8 +43,8 @@
                 "define": {
                     "freezeTableName": true, //模型名是否和数据库名称相同
                     "paranoid": true, //是否标记删除
-                    "timestamps": true, //是否标记删除 
-                    "underscored": true
+                    "timestamps": true //是否标记删除 
+                    // "underscored": true
                     // "allowNull":false
                     // "defaultValue":""
                 }

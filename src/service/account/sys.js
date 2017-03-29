@@ -35,7 +35,10 @@ var sysService = {
     },
     getType: async function (d) {
         return model[d.name]
-        
+
+    },
+    getwxToken: async function (d) {
+
     }
 }
 module.exports = sysService;
