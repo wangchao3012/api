@@ -80,7 +80,7 @@ var sr = {
 };
 
 const defaultToken = config.app.defaultToken;
-const noCheckToken = ['account.user.login', 'user.register'];
+const noCheckToken = ['user.login', 'user.register'];
 
 var checkAuth = async function (cr) {
 
