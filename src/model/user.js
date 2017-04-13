@@ -73,11 +73,11 @@ module.exports = function (sequelize, DataTypes) {
             defaultValue: false
         }
     }, {
-            getterMethods: {
-                upperUserName: function () {
-                    return this.userName.toUpperCase();
-                }
-            },
+            // getterMethods: {
+            //     upperUserName: function () {
+            //         return this.userName.toUpperCase();
+            //     }
+            // },
             indexes: [{
                 unique: true,
                 fields: ['loweredUserName'] //索引列内容长度不能太长

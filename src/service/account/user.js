@@ -82,6 +82,11 @@ var userService = {
     },
     editPassword: async function () {
 
+    },
+    async list(d) {
+        return User.findAll({
+            attributes: ['id',['name','n'] ]
+        });
     }
 
 }
