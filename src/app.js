@@ -12,6 +12,15 @@ const cache = require('./common/cache');
 const bodyparser = require('koa-bodyparser')();
 app.use(convert(bodyparser));
 
+//koa 跨域
+const cors = require('koa-cors');
+// import cors from 'koa-cors'
+
+app.use(convert(cors({
+    credentials: true, // set Access-Control-Allow-Credentials to true
+    methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS']
+})))
+
 const tool = require('./common/tool');
 const taskService = require('./service/task');
 const service = require('./service/index');
