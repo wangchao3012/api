@@ -85,7 +85,7 @@ var userService = {
     },
     async list(d) {
         return User.findAll({
-            attributes: ['id',['name','n'] ]
+            attributes: ['id', ['name', 'n']]
         });
     }
 
@@ -97,7 +97,7 @@ let getUserInfo = async function (user, cr) {
     // let token1 = await Cache.hget(cr.oid, Cache.keys(Cache.key.token, cr.sn));
     return {
         userName: user.userName,
-        openId: user.openId,
+        oId: user.openId,
         token: token,
         head: user.head,
         email: user.email

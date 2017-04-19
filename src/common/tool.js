@@ -11,6 +11,9 @@ tool.signJoin = function (obj, token) {
         let value = obj[key];
         key != 'si' && value != undefined && value != null && value !== '' && (content += key + value)
     }
+    content = token + content
+
+    console.log('content::', content);
     return content;
 
     // keys = keys.sort(function (a, b) {
@@ -22,8 +25,7 @@ tool.sign = function (obj, token) {
     obj.si = md5(tool.signJoin(obj, token));
     return obj;
 }
-tool.checkSign = function (obj, token) {
-    console.log('si:::', md5(this.signJoin(obj, token)));
+tool.checkSign = function (obj, token) { 
     return obj.si == md5(this.signJoin(obj, token));
 }
 tool.createPassword = function (pwd, salt) {
@@ -47,14 +49,14 @@ tool.prototype = {
     },
     isTrue: function (flag, msg, call) {
         if (!flag) {
-        call&&    call()
+            call &&   call()
             throw msg;
         }
         return this;
     },
     isFalse: function (flag, msg, call) {
         if (flag) {
-             call&&    call()
+            call && call()
             throw msg;
         }
         return this;
