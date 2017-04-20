@@ -33,7 +33,8 @@ MessageTempContent.belongsTo(MessageTemp);
 const uuid = require('uuid/v4');
 const Tool = require('../common/tool');
 
-sequelize.sync({ force: true }).then(res => {
+// true && 
+sequelize.sync({ force: false }).then(res => {
     console.info("%s   数据库同步成功", config.mysql.account.dbname);
     // 添加基础数据
 
@@ -64,7 +65,7 @@ sequelize.sync({ force: true }).then(res => {
             }
             // let salt = uuid();
             // let password = Tool.createPassword('111111', salt);
-            return User.create({ userName: 'Admin', password: '111111', openId: '111'  }, { transaction: t }).then(dmuser1 => {
+            return User.create({ userName: 'Admin', password: '111111', openId: '111' }, { transaction: t }).then(dmuser1 => {
                 return Role.findOne({ code: 'sysAdmin' }).then(dmrole => {
                     dmuser1.setRoles(dmrole);
                     return dmuser1;
