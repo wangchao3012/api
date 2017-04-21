@@ -33,8 +33,7 @@ MessageTempContent.belongsTo(MessageTemp);
 const uuid = require('uuid/v4');
 const Tool = require('../common/tool');
 
-// true && 
-sequelize.sync({ force: false }).then(res => {
+false && sequelize.sync({ force: true }).then(res => {
     console.info("%s   数据库同步成功", config.mysql.account.dbname);
     // 添加基础数据
 
@@ -50,6 +49,15 @@ sequelize.sync({ force: false }).then(res => {
             mt.createMessageTempContent({ content: '【上海】${verCode} 修改密码证码' });
         });
     });
+
+
+    // 初始化菜单
+    let ms = Menu.bulkCreate([
+        { name: '用户管理', sort: '01' },
+        { name: '用户', sort: '01_01' },
+        { name: '角色', sort: '01_02' },
+        { name: '菜单', sort: '01_03' }
+    ]);
 
     // 初始化用户
     let rs = Role.bulkCreate([{ name: '系统管理员', code: 'sysAdmin', sort: 1 }, { name: '管理员', code: 'admin', sort: 2 }, { name: '普通用户', code: 'user', sort: 3 }])

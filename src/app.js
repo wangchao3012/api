@@ -118,17 +118,7 @@ console.log('env::', process.env.NODE_ENV);
 console.log('服务启动成功:' + config.port)
 
 
-const exec = require('child_process').exec;
-exec('back.sh', (error, stdout, stderr) => {
-    // ;mysqldump -h 127.0.0.1 -u root -p123456 xz_account > d:/backupfile1.sql
-    if (error) {
-        console.error(`exec error: ${error}`);
-        return;
-    }
-    console.log(`stdout: ${stdout}`);
-    console.log(`stderr: ${stderr}`);
-});
-
+ 
 
 
 module.exports = app;

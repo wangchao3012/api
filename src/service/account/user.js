@@ -13,8 +13,13 @@ var userService = {
         let user,
             loweredUserName = d.userName.toLowerCase();
         switch (d.type) {
-            case 1://用户名，密码登录 
+            case 1://用户名，密码登录  
+            //  include: [Role],
                 await User.findOne({ where: { $or: [{ loweredUserName: loweredUserName }, { mobile: loweredUserName }, { email: loweredUserName }] } }).then(dmu => {
+                    var roles = dmu.getRoles();
+                    roles.forEach(function (role) {
+
+                    })
                     Tool(dmu).notNull('用户名或密码错误').isFalse(dmu.isLoacked, '用户已锁定，请使用手机号动态验证码方式登录')
                         .isTrue(Tool.createPassword(d.password, dmu.salt) == dmu.password, '用户名或密码错误', () => {
                             dmu.passwordErrorNum++
@@ -51,6 +56,7 @@ var userService = {
                             $or: [{ loweredUserName: loweredUserName }, { mobile: loweredUserName }, { email: loweredUserName }]
                         }
                     }).then(dmuser => {
+
                         Tool(dmuser).isNull('用户名已存在');
                         let salt = uuid();
                         let password = Tool.createPassword(d.password, salt);
