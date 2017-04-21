@@ -11,7 +11,7 @@ const cache = require('./common/cache');
 // http 参数解析
 const bodyparser = require('koa-bodyparser')();
 app.use(convert(bodyparser));
-
+ 
 //koa 跨域
 const cors = require('koa-cors');
 // import cors from 'koa-cors'
