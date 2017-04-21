@@ -1,5 +1,5 @@
 {
-  "name": "project",
+  "name": "api",
   "version": "0.0.1",
   "description": "项目",
   "main": "src/app.js",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wangchao3012/project.git"
+    "url": "git+https://github.com/wangchao3012/api.git"
   },
   "keywords": [
     "koa",
@@ -20,9 +20,9 @@
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/wangchao3012/project/issues"
+    "url": "https://github.com/wangchao3012/api/issues"
   },
-  "homepage": "https://github.com/wangchao3012/project#readme",
+  "homepage": "https://github.com/wangchao3012/api#readme",
   "dependencies": {
     "ccap": "^0.6.10",
     "config": "^1.25.1",
