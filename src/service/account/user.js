@@ -2,7 +2,9 @@ const uuid = require('uuid/v4');
 const sequelize = require('../dbAccount').sequelize;
 const User = require('../dbAccount').User;
 const Role = require('../dbAccount').Role;
+const Menu = require('../dbAccount').Menu;
 const UserInRole = require('../dbAccount').UserInRole;
+const RoleInMenu = require('../dbAccount').RoleInMenu;
 const Tool = require('../../common/tool');
 const Cache = require('../../common/cache');
 const moment = require('moment');
@@ -10,16 +12,20 @@ const moment = require('moment');
 var userService = {
     login: async function (d, cr) {
         let token = uuid();
-        let user,
+        let user, roleList,
             loweredUserName = d.userName.toLowerCase();
         switch (d.type) {
             case 1://用户名，密码登录  
-            //  include: [Role],
-                await User.findOne({ where: { $or: [{ loweredUserName: loweredUserName }, { mobile: loweredUserName }, { email: loweredUserName }] } }).then(dmu => {
-                    var roles = dmu.getRoles();
-                    roles.forEach(function (role) {
+                //  include: [Role],
+                var a = await User.findOne({
+                    where: {
+                        $or: [
+                            { loweredUserName: loweredUserName },
+                            { mobile: loweredUserName },
+                            { email: loweredUserName }]
+                    }
+                }).then(dmu => {
 
-                    })
                     Tool(dmu).notNull('用户名或密码错误').isFalse(dmu.isLoacked, '用户已锁定，请使用手机号动态验证码方式登录')
                         .isTrue(Tool.createPassword(d.password, dmu.salt) == dmu.password, '用户名或密码错误', () => {
                             dmu.passwordErrorNum++
@@ -27,7 +33,51 @@ var userService = {
                             dmu.save();
                         });
                     user = dmu;
+                    return dmu;
                 })
+                // var rl = a.getRoles();
+                // rl.forEach(function (r) {
+                //     // tag的notes可以通过tag.notes访问，关系模型可以通过tag.notes[0].tagging访问
+                //     console.log(r);
+                // });
+                // var roles = await Role.findAll({
+                //     'include': [
+                //         {
+                //             'model': User,
+                //             // 这里可以对notes进行where
+                //             where: {
+                //                 $or: [{ loweredUserName: loweredUserName },
+                //                 { mobile: loweredUserName },
+                //                 { email: loweredUserName }]
+                //             }
+                //         }
+                //     ]
+                //     // 这里可以对tags进行where
+                // });
+                // roles.forEach(function (role) {
+                //     // tag的notes可以通过tag.notes访问，关系模型可以通过tag.notes[0].tagging访问
+                //     console.log(role);
+                // });
+
+
+                // var menus = await Menu.findAll({
+                //     'include': [
+                //         {
+                //             'model': User,
+                //             // 这里可以对notes进行where
+                //             where: {
+                //                 $or: [{ loweredUserName: loweredUserName },
+                //                 { mobile: loweredUserName },
+                //                 { email: loweredUserName }]
+                //             }
+                //         }
+                //     ]
+                //     // 这里可以对tags进行where
+                // });
+                // menus.forEach(function (menu) {
+                //     // tag的notes可以通过tag.notes访问，关系模型可以通过tag.notes[0].tagging访问
+                //     console.log('menu', menu);
+                // });
                 break;
             case 2://手机号，验证码登录
                 let verCode = await Cache.hget(cr.oid, Cache.keys(Cache.key.token, cr.sn));
@@ -100,13 +150,91 @@ var userService = {
 let getUserInfo = async function (user, cr) {
     let token = uuid();
     await Cache.hset(user.openId, Cache.keys(Cache.key.token, cr.sn), token, 30);
+    // let role = await user.getRoles().then(rr => { return rr });
+
+    let roleList = await user.getRoles({
+
+        'include': [
+            {
+                'model': Menu,
+                // attributes: ['name', 'code', 'url'],  //roleInMenu
+                attributes: ['id', 'name', 'code', 'url', 'isMenu', 'sort'],
+                // 这里可以对notes进行where
+                // where: {
+                //     $or: [{ loweredUserName: loweredUserName },
+                //     { mobile: loweredUserName },
+                //     { email: loweredUserName }]
+                // }
+
+            }
+        ],
+
+        // exclude: ['roleInMenu']
+        // 这里可以对tags进行where
+    });
+    let roleIdList = user.roleIds.split(',');
+    let menuList = await Menu.findAll(
+        {
+            include: [
+                {
+                    'model': Role,
+                    where: {
+                        id: {
+                            $in: roleIdList
+                        }
+                    }
+                }
+            ],
+            attributes: ['id', 'name', 'code', 'url', 'isMenu', 'sort'],
+            order: 'sort'
+        }
+    )
+    console.log(JSON.stringify(menuList))
+    let menu = [], auth = [];
+    roleList.forEach(r => {
+        r.menus.forEach(m => {
+
+            if (!(menu.find(m1 => m1.id == m.id) || auth.find(m1 => m1.id == m.id))) {
+                if (m.isMenu) {
+                    let mm = {
+                        name: m.name,
+                        code: m.code,
+                        url: m.url,
+                        sort: m.sort
+                    };
+                    if (m.sort.length == 2) {
+                        menu.push(mm)
+                    }
+                    else {
+                        let sort = m.sort.substring(0, m.sort.lastIndexOf('_'))
+                        let menuChild = menu.find(m1 => m1.sort == sort)
+                        menuChild.menu = menuChild.menu || [];
+                        menuChild.menu.push(mm);
+                    }
+
+                } else {
+                    auth.push({
+                        name: m.name,
+                        code: m.code
+                    })
+                }
+
+            }
+        });
+    });
+
     // let token1 = await Cache.hget(cr.oid, Cache.keys(Cache.key.token, cr.sn));
     return {
-        userName: user.userName,
-        oId: user.openId,
-        token: token,
-        head: user.head,
-        email: user.email
+        user: {
+            userName: user.userName,
+            oId: user.openId,
+            token: token,
+            head: user.head,
+            email: user.email
+        },
+        menu: menu,
+        auth: auth
+
     }
 }
 module.exports = userService;
