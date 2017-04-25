@@ -33,7 +33,8 @@ MessageTempContent.belongsTo(MessageTemp);
 const uuid = require('uuid/v4');
 const Tool = require('../common/tool');
 
-false && sequelize.sync({ force: true }).then(res => {
+true && sequelize.sync({ force: true }).then(res => {
+
     console.info("%s   数据库同步成功", config.mysql.account.dbname);
     // 添加基础数据
 
@@ -73,7 +74,7 @@ false && sequelize.sync({ force: true }).then(res => {
             }
             // let salt = uuid();
             // let password = Tool.createPassword('111111', salt);
-            return User.create({ userName: 'Admin', password: '111111', openId: '111' }, { transaction: t }).then(dmuser1 => {
+            return User.create({ userName: 'Admin', password: '111111', openId: '111', roleIds: '1,2' }, { transaction: t }).then(dmuser1 => {
                 return Role.findOne({ code: 'sysAdmin' }).then(dmrole => {
                     dmuser1.setRoles(dmrole);
                     return dmuser1;
@@ -83,8 +84,11 @@ false && sequelize.sync({ force: true }).then(res => {
         });
     });
 
-
-
+    let list = [];
+    for (var i = 0; i < 20; i++) {
+        list.push({ userName: 'Admin-' + i, password: '111111' + i, openId: '1112' + i, roleIds: '1,2', mobile: i })
+    }
+    let us = User.bulkCreate(list);
 
 
 

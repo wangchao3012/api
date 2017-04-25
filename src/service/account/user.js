@@ -140,8 +140,33 @@ var userService = {
 
     },
     async list(d) {
-        return User.findAll({
-            attributes: ['id', ['name', 'n']]
+        let where = {
+            $or: [
+                {
+                    loweredUserName: {
+                        $like: '%' + d.txt
+                    }
+                },
+                {
+                    mobile: {
+                        $like: '%' + d.txt
+                    }
+                },
+                {
+                    email: {
+                        $like: '%' + d.txt
+                    }
+                }]
+        }
+        if (d.sex != -1) {
+            where.sex = d.sex;
+        }
+        return await User.findAndCountAll({
+            where,
+            attributes: ['id', ['name', 'name'], 'userName', 'sex', 'head', 'mobile', 'isLoacked', 'updatedAt'],
+            offset: d.offset,
+            limit: d.pageSize,
+            order: d.sort
         });
     }
 
@@ -150,6 +175,9 @@ var userService = {
 let getUserInfo = async function (user, cr) {
     let token = uuid();
     await Cache.hset(user.openId, Cache.keys(Cache.key.token, cr.sn), token, 30);
+
+    // let token1 = await Cache.hget(cr.oid, Cache.keys(Cache.key.token, cr.sn));
+
     // let role = await user.getRoles().then(rr => { return rr });
 
     let roleList = await user.getRoles({
@@ -185,56 +213,52 @@ let getUserInfo = async function (user, cr) {
                     }
                 }
             ],
-            attributes: ['id', 'name', 'code', 'url', 'isMenu', 'sort'],
+            attributes: ['id', 'name', 'code', 'url', 'isMenu', 'sort', 'icon'],
             order: 'sort'
         }
     )
     console.log(JSON.stringify(menuList))
+
     let menu = [], auth = [];
-    roleList.forEach(r => {
-        r.menus.forEach(m => {
-
-            if (!(menu.find(m1 => m1.id == m.id) || auth.find(m1 => m1.id == m.id))) {
-                if (m.isMenu) {
-                    let mm = {
-                        name: m.name,
-                        code: m.code,
-                        url: m.url,
-                        sort: m.sort
-                    };
-                    if (m.sort.length == 2) {
-                        menu.push(mm)
-                    }
-                    else {
-                        let sort = m.sort.substring(0, m.sort.lastIndexOf('_'))
-                        let menuChild = menu.find(m1 => m1.sort == sort)
-                        menuChild.menu = menuChild.menu || [];
-                        menuChild.menu.push(mm);
-                    }
-
-                } else {
-                    auth.push({
-                        name: m.name,
-                        code: m.code
-                    })
+    menuList.forEach(m => {
+        if (!(menu.find(m1 => m1.id == m.id) || auth.find(m1 => m1.id == m.id))) {
+            if (m.isMenu) {
+                let mm = {
+                    name: m.name,
+                    code: m.code,
+                    to: m.url,
+                    sort: m.sort,
+                    icon: m.icon
+                };
+                if (m.sort.length == 2) {
+                    menu.push(mm)
+                }
+                else {
+                    let sort = m.sort.substring(0, m.sort.lastIndexOf('_'))
+                    let menuChild = menu.find(m1 => m1.sort == sort)
+                    menuChild.menu = menuChild.menu || [];
+                    menuChild.menu.push(mm);
                 }
 
+            } else {
+                auth.push({
+                    name: m.name,
+                    code: m.code
+                })
             }
-        });
-    });
 
-    // let token1 = await Cache.hget(cr.oid, Cache.keys(Cache.key.token, cr.sn));
+        }
+    })
+
     return {
-        user: {
-            userName: user.userName,
-            oId: user.openId,
-            token: token,
-            head: user.head,
-            email: user.email
-        },
+        name: user.name,
+        userName: user.userName,
+        oId: user.openId,
+        token: token,
+        head: user.head,
+        email: user.email,
         menu: menu,
         auth: auth
-
     }
 }
 module.exports = userService;

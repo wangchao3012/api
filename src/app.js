@@ -11,7 +11,7 @@ const cache = require('./common/cache');
 // http 参数解析
 const bodyparser = require('koa-bodyparser')();
 app.use(convert(bodyparser));
- 
+
 //koa 跨域
 const cors = require('koa-cors');
 // import cors from 'koa-cors'
@@ -98,7 +98,7 @@ var checkAuth = async function (cr) {
     }
     else {
         // var flag = await cache.hset(cr.uid, cr.si, uuid());
-        var token = await cache.hget(cr.uid, cr.sn);
+        var token = await cache.hget(cr.oid, cache.keys(cache.key.token, cr.sn));
         if (tool.checkSign(cr, token)) {
             return { sc: model.StatusCode.成功, si: token };
         }
@@ -118,7 +118,7 @@ console.log('env::', process.env.NODE_ENV);
 console.log('服务启动成功:' + config.port)
 
 
- 
+
 
 
 module.exports = app;

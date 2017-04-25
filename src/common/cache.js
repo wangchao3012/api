@@ -104,8 +104,10 @@ var cache = {
             }
         }
         else {
-            val = typeof v == 'function' && v();
-            cache.hset(k, val, m, h, d);
+            if (typeof v == 'function') {
+                val = v();
+                cache.hset(k, val, m, h, d);
+            }
         }
 
         return val;

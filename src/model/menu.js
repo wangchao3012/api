@@ -23,7 +23,7 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.BOOLEAN,
             defaultValue: false
         },
-        ico: {
+        icon: {
             type: DataTypes.STRING,
             defaultValue: ''
         },

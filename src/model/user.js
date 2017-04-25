@@ -27,6 +27,13 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             defaultValue: ''
         },
+        sex: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+            get: function () {
+                return this.getDataValue('sex') ? '女' : '男';
+            }
+        },
         mobile: {
             type: DataTypes.STRING(11),
             defaultValue: '',
