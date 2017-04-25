@@ -54,14 +54,20 @@ true && sequelize.sync({ force: true }).then(res => {
 
     // 初始化菜单
     let ms = Menu.bulkCreate([
-        { name: '用户管理', sort: '01' },
-        { name: '用户', sort: '01_01' },
-        { name: '角色', sort: '01_02' },
-        { name: '菜单', sort: '01_03' }
+        { name: '用户管理', sort: '01', icon: 'fa-user-o' },
+        { name: '用户', sort: '01_01', icon: 'fa-user-o', url: '/user/list' },
+        { name: '角色', sort: '01_02', icon: 'fa-file-text-o', url: '/role/list' },
+        { name: '菜单', sort: '01_03', icon: 'fa-align-left', url: '/menu/list' }
     ]);
 
-    // 初始化用户
-    let rs = Role.bulkCreate([{ name: '系统管理员', code: 'sysAdmin', sort: 1 }, { name: '管理员', code: 'admin', sort: 2 }, { name: '普通用户', code: 'user', sort: 3 }])
+    // 初始化角色
+    let rs = Role.bulkCreate([
+        { name: '系统管理员', code: 'sysAdmin', sort: 1 },
+        { name: '管理员', code: 'admin', sort: 2 },
+        { name: '普通用户', code: 'user', sort: 3 }]
+    );
+
+
 
     sequelize.transaction(t => {
         return User.findOne({
@@ -74,9 +80,14 @@ true && sequelize.sync({ force: true }).then(res => {
             }
             // let salt = uuid();
             // let password = Tool.createPassword('111111', salt);
-            return User.create({ userName: 'Admin', password: '111111', openId: '111', roleIds: '1,2' }, { transaction: t }).then(dmuser1 => {
+            return User.create({ userName: 'admin', password: '111111', openId: '111', roleIds: '1,2' }, { transaction: t }).then(dmuser1 => {
                 return Role.findOne({ code: 'sysAdmin' }).then(dmrole => {
                     dmuser1.setRoles(dmrole);
+                    let list = [];
+                    for (var i = 0; i < 20; i++) {
+                        list.push({ userName: 'admin_' + i, password: '111111' + i, openId: '1112' + i, roleIds: '1,2', mobile: i })
+                    }
+                    let us = User.bulkCreate(list);
                     return dmuser1;
                 });
             });
@@ -84,11 +95,7 @@ true && sequelize.sync({ force: true }).then(res => {
         });
     });
 
-    let list = [];
-    for (var i = 0; i < 20; i++) {
-        list.push({ userName: 'Admin-' + i, password: '111111' + i, openId: '1112' + i, roleIds: '1,2', mobile: i })
-    }
-    let us = User.bulkCreate(list);
+
 
 
 

@@ -21,7 +21,7 @@ module.exports = function (sequelize, DataTypes) {
         // 是否是菜单
         isMenu: {
             type: DataTypes.BOOLEAN,
-            defaultValue: false
+            defaultValue: true
         },
         icon: {
             type: DataTypes.STRING,
