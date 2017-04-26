@@ -187,26 +187,26 @@ let getUserInfo = async function (user, cr) {
 
     // let role = await user.getRoles().then(rr => { return rr });
 
-    let roleList = await user.getRoles({
+    // let roleList = await user.getRoles({
 
-        'include': [
-            {
-                'model': Menu,
-                // attributes: ['name', 'code', 'url'],  //roleInMenu
-                attributes: ['id', 'name', 'code', 'url', 'isMenu', 'sort'],
-                // 这里可以对notes进行where
-                // where: {
-                //     $or: [{ loweredUserName: loweredUserName },
-                //     { mobile: loweredUserName },
-                //     { email: loweredUserName }]
-                // }
+    //     'include': [
+    //         {
+    //             'model': Menu,
+    //             // attributes: ['name', 'code', 'url'],  //roleInMenu
+    //             attributes: ['id', 'name', 'code', 'url', 'isMenu', 'sort'],
+    //             // 这里可以对notes进行where
+    //             // where: {
+    //             //     $or: [{ loweredUserName: loweredUserName },
+    //             //     { mobile: loweredUserName },
+    //             //     { email: loweredUserName }]
+    //             // }
 
-            }
-        ],
+    //         }
+    //     ],
 
-        // exclude: ['roleInMenu']
-        // 这里可以对tags进行where
-    });
+    //     // exclude: ['roleInMenu']
+    //     // 这里可以对tags进行where
+    // });
     let roleIdList = user.roleIds.split(',');
     let menuList = await Menu.findAll(
         {
@@ -217,7 +217,10 @@ let getUserInfo = async function (user, cr) {
                         id: {
                             $in: roleIdList
                         }
-                    }
+                    },
+                    // 关联表列
+                    attributes:[]
+                    // required: false
                 }
             ],
             attributes: ['id', 'name', 'code', 'url', 'isMenu', 'sort', 'icon'],

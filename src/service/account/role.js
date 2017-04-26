@@ -16,6 +16,7 @@ var roleService = {
     },
     async edit(d) {
 
+        Role.insertOrUpdate()
     }
 }
 module.exports = roleService;

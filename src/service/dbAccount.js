@@ -33,7 +33,7 @@ MessageTempContent.belongsTo(MessageTemp);
 const uuid = require('uuid/v4');
 const Tool = require('../common/tool');
 
-true && sequelize.sync({ force: true }).then(res => {
+false && sequelize.sync({ force: true }).then(res => {
 
     console.info("%s   数据库同步成功", config.mysql.account.dbname);
     // 添加基础数据
