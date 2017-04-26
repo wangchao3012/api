@@ -17,7 +17,7 @@ var userService = {
         switch (d.type) {
             case 1://用户名，密码登录  
                 //  include: [Role],
-                var a = await User.findOne({
+                await User.findOne({
                     where: {
                         $or: [
                             { loweredUserName: loweredUserName },
@@ -33,7 +33,6 @@ var userService = {
                             dmu.save();
                         });
                     user = dmu;
-                    return dmu;
                 })
                 // var rl = a.getRoles();
                 // rl.forEach(function (r) {
@@ -136,8 +135,16 @@ var userService = {
         }
         return getUserInfo(user, cr);
     },
-    editPassword: async function () {
+    editPassword: async function (d, cr) {
+        let dmu = await User.findOne({
+            where: {
+                openId: cr.oid
+            }
+        });
 
+        Tool(dmu).notNull('用户不存在').isTrue(Tool.createPassword(d.password, dmu.salt) == dmu.password, '原密码不正确');
+        dmu.password = d.newPassword;
+        dmu.save();
     },
     async list(d) {
         let where = {

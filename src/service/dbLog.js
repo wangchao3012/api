@@ -9,7 +9,7 @@ let sequelize = new Sequelize(config.mysql.log.dbname, config.mysql.log.user, co
 let ApiLog = sequelize.import('../model/apiLog');
 let ExceptionLog = sequelize.import('../model/exceptionLog');
 
-sequelize.sync({ force: false }).then(res => {
+sequelize.sync({ force: true }).then(res => {
     console.info("%s   数据库同步成功", config.mysql.log.dbname);
 }).catch(err => {
     console.log("%s   数据库同步失败: %s", config.mysql.log.dbname, err);
