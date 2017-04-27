@@ -7,6 +7,9 @@ var roleService = {
             }
 
         }
+        if (d.isLocked != -1) {
+            where.isLocked = d.isLocked;
+        }
         return await Role.findAndCountAll({
             where,
             offset: d.offset,
