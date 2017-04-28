@@ -20,6 +20,13 @@ var menuService = {
     async edit(d) {
 
         Menu.insertOrUpdate()
+    },
+    async del(d) {
+        Menu.findAll({
+            id: {
+                $in: d.ids
+            }
+        }).delay();
     }
 }
 module.exports = menuService;

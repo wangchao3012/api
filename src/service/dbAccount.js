@@ -33,7 +33,7 @@ MessageTempContent.belongsTo(MessageTemp);
 const uuid = require('uuid/v4');
 const Tool = require('../common/tool');
 
-false && sequelize.sync({ force: true }).then(res => {
+true && sequelize.sync({ force: true }).then(res => {
 
     console.info("%s   数据库同步成功", config.mysql.account.dbname);
     // 添加基础数据
@@ -50,26 +50,34 @@ false && sequelize.sync({ force: true }).then(res => {
             mt.createMessageTempContent({ content: '【上海】${verCode} 修改密码证码' });
         });
     });
+    // { name: '系统管理员', code: 'sysAdmin', sort: 1 },
+    //         { name: '管理员', code: 'admin', sort: 2 },
+    //         { name: '普通用户', code: 'user', sort: 3 }],
+
+    sequelize.transaction(t => {
+        return Role.create(
+            { name: '系统管理员', code: 'sysAdmin', sort: 1 },
+            { transaction: t }
+        ).then(r => {
+            r.createMenu({ name: '用户管理', sort: '01', icon: 'fa-user-o' })
+            r.createMenu({ name: '用户', sort: '01_01', icon: 'fa-user-o', url: '/user/list' })
+            r.createMenu({ name: '角色', sort: '01_02', icon: 'fa-file-text-o', url: '/role/list' })
+            r.createMenu({ name: '菜单', sort: '01_03', icon: 'fa-align-left', url: '/menu/list' })
+
+        });
+    });
 
 
     // 初始化菜单
-    let ms = Menu.bulkCreate([
-        { name: '用户管理', sort: '01', icon: 'fa-user-o' },
-        { name: '用户', sort: '01_01', icon: 'fa-user-o', url: '/user/list' },
-        { name: '角色', sort: '01_02', icon: 'fa-file-text-o', url: '/role/list' },
-        { name: '菜单', sort: '01_03', icon: 'fa-align-left', url: '/menu/list' }
-    ]);
 
     // 初始化角色
-    let rs = Role.bulkCreate([
-        { name: '系统管理员', code: 'sysAdmin', sort: 1 },
-        { name: '管理员', code: 'admin', sort: 2 },
-        { name: '普通用户', code: 'user', sort: 3 }]
-    );
+
+
 
 
 
     sequelize.transaction(t => {
+
         return User.findOne({
             where: {
                 $or: [{ loweredUserName: 'admin' }, { mobile: 'admin' }, { email: 'admin' }]
@@ -80,17 +88,18 @@ false && sequelize.sync({ force: true }).then(res => {
             }
             // let salt = uuid();
             // let password = Tool.createPassword('111111', salt);
-            return User.create({ userName: 'admin', password: '111111', openId: '111', roleIds: '1,2' }, { transaction: t }).then(dmuser1 => {
-                return Role.findOne({ code: 'sysAdmin' }).then(dmrole => {
-                    dmuser1.setRoles(dmrole);
-                    let list = [];
-                    for (var i = 0; i < 20; i++) {
-                        list.push({ userName: 'admin_' + i, password: '111111' + i, openId: '1112' + i, roleIds: '1,2', mobile: i })
-                    }
-                    let us = User.bulkCreate(list);
-                    return dmuser1;
+            return User.create({ name: '管理员', userName: 'admin', password: '111111', openId: '111', roleIds: '1,2' },
+                { transaction: t }).then(dmuser1 => {
+                    return Role.findOne({ code: 'sysAdmin' }).then(dmrole => {
+                        dmuser1.setRoles(dmrole);
+                        let list = [];
+                        for (var i = 0; i < 20; i++) {
+                            list.push({ userName: 'admin_' + i, password: '111111' + i, openId: '1112' + i, roleIds: '1,2', mobile: i })
+                        }
+                        let us = User.bulkCreate(list);
+                        return dmuser1;
+                    });
                 });
-            });
 
         });
     });
