@@ -12,7 +12,7 @@ const cache = require('./common/cache');
 const bodyparser = require('koa-bodyparser')();
 app.use(convert(bodyparser));
 
-//koa 跨域
+//koa 跨域  
 const cors = require('koa-cors');
 // import cors from 'koa-cors'
 
