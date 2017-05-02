@@ -27,6 +27,7 @@ var menuService = {
                 $in: d.ids
             }
         }).delay();
+        Menu.findAndCount();
     }
 }
 module.exports = menuService;
